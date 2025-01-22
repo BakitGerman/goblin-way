@@ -1,11 +1,11 @@
 package binarysearch
 
-func binarysearchInt(s []int, target int) int {
-	high := len(s) - 1
+func binarysearchInt(list []int, target int) int {
+	high := len(list) - 1
 	low := 0
 	for low <= high {
 		mid := int(uint(low+high) >> 1)
-		guess := s[mid]
+		guess := list[mid]
 		if guess == target {
 			return mid
 		} else if guess < target {
@@ -15,6 +15,12 @@ func binarysearchInt(s []int, target int) int {
 		}
 	}
 	return low
+}
+
+func binarySearchString(list []string, target string) int {
+	return binarySearch(len(list), func(i int) bool {
+		return list[i] >= target
+	})
 }
 
 func binarySearch(n int, f func(i int) bool) int {
