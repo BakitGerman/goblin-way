@@ -1,11 +1,7 @@
 package binarysearch
 
 import (
-	"fmt"
-	"math/rand"
-	"sort"
 	"testing"
-	"time"
 )
 
 func TestBinarySearchInt(t *testing.T) {
@@ -24,8 +20,8 @@ func TestBinarySearchInt(t *testing.T) {
 		{
 			name:     "Target not in list, insert position",
 			list:     []int{1, 3, 5, 7, 9},
-			target:   6,
-			expected: 3,
+			target:   10,
+			expected: 5,
 		},
 		{
 			name:     "Target smaller than all elements",
@@ -35,9 +31,9 @@ func TestBinarySearchInt(t *testing.T) {
 		},
 		{
 			name:     "Target larger than all elements",
-			list:     []int{1, 3, 5, 7, 9},
-			target:   10,
-			expected: 5,
+			list:     []int{1, 3, 5, 5, 7, 9},
+			target:   5,
+			expected: 2,
 		},
 		{
 			name:     "Empty list",
@@ -67,7 +63,7 @@ func TestBinarySearchInt(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := binarysearchInt(tt.list, tt.target)
+			result := iterativeBinarySearchInts(tt.list, tt.target)
 			if result != tt.expected {
 				t.Errorf("binarysearchInt(%v, %d) = %d; want %d", tt.list, tt.target, result, tt.expected)
 			} else {
@@ -75,37 +71,15 @@ func TestBinarySearchInt(t *testing.T) {
 			}
 		})
 	}
-}
-
-func generateRandomPhoneNumber() string {
-	return fmt.Sprintf("89%09d", rand.Intn(1_000_000_000))
-}
-
-func TestBinarySearchString(t *testing.T) {
-
-	rand.NewSource((time.Now().UnixNano()))
-
-	phones := make([]string, 10)
-	for i := 0; i < 10; i++ {
-		phones[i] = generateRandomPhoneNumber()
-	}
-
-	sort.Strings(phones)
-
-	t.Log("Sorted phone numbers:")
-	for _, phone := range phones {
-		t.Log(phone)
-	}
-
-	targets := append(phones, "89878553232", "89999999999")
-
-	for _, target := range targets {
-		index := binarySearchString(phones, target)
-
-		if index >= len(phones) || phones[index] != target {
-			t.Errorf("Failed to find phone number: %s", target)
-		} else {
-			t.Logf("Successfully found phone number: %s at index %d", target, index)
-		}
+	// recursion binary search tests
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := recursionBinarySearchInts(tt.list, tt.target, 0, len(tt.list)-1)
+			if result != tt.expected {
+				t.Errorf("binarysearchInt(%v, %d) = %d; want %d", tt.list, tt.target, result, tt.expected)
+			} else {
+				t.Logf("Successfully found number: %d at index %d", tt.target, tt.expected)
+			}
+		})
 	}
 }

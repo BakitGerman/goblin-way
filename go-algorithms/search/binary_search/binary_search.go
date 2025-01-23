@@ -1,37 +1,39 @@
 package binarysearch
 
-func binarysearchInt(list []int, target int) int {
+// O(log(n)) - worst case
+// O(1) - best case
+// O(log(n)) - average case
+// ω(1) and o(log(n))
+func iterativeBinarySearchInts(list []int, target int) int {
+	var low int
 	high := len(list) - 1
-	low := 0
+	// moves left or right
 	for low <= high {
 		mid := int(uint(low+high) >> 1)
 		guess := list[mid]
-		if guess == target {
+		if guess < target {
+			low = mid + 1
+		} else if guess > target {
+			high = mid - 1
+		} else {
 			return mid
-		} else if guess < target {
-			low = mid + 1
-		} else {
-			high = mid - 1
 		}
 	}
 	return low
 }
 
-func binarySearchString(list []string, target string) int {
-	return binarySearch(len(list), func(i int) bool {
-		return list[i] >= target
-	})
-}
-
-func binarySearch(n int, f func(i int) bool) int {
-	low, high := 0, n-1
-	for low <= high {
-		mid := int(uint(low+high) >> 1)
-		if !f(mid) {
-			low = mid + 1
-		} else {
-			high = mid - 1
-		}
+func recursionBinarySearchInts(list []int, target, low, high int) int {
+	// based case
+	if low > high {
+		return low
 	}
-	return low
+
+	mid := int(uint(low+high) >> 1)
+	// recursion case
+	if list[mid] < target {
+		return recursionBinarySearchInts(list, target, mid+1, high)
+	} else if list[mid] > target {
+		return recursionBinarySearchInts(list, target, low, mid-1)
+	}
+	return mid
 }
