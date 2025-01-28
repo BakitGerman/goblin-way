@@ -7,7 +7,10 @@ type account struct {
 }
 
 func BenchmarkWithPointers(t *testing.B) {
-	accounts := [...]*account{{100}, {200}, {300}}
+	accounts := make([]account, 10000)
+	for i := 0; i < 10000; i++ {
+		accounts[i] = account{i + 1}
+	}
 
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
@@ -18,7 +21,10 @@ func BenchmarkWithPointers(t *testing.B) {
 }
 
 func BenchmarkWithoutPointers(t *testing.B) {
-	accounts := [...]*account{{100}, {200}, {300}}
+	accounts := make([]account, 10000)
+	for i := 0; i < 10000; i++ {
+		accounts[i] = account{i + 1}
+	}
 
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
