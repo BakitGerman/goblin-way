@@ -1,16 +1,21 @@
 package main
 
 func allocation(index int) int {
-	var data [1 << 20]int
+	var data [1 << 40]int
 	return data[index]
 }
 
-func main() {
+// check escape
+// go run -gcflags='-m' . | grep escape
 
+// go run ./main.go
+func main() {
 	array := [100]int{}
 	println(&array)
 
-	allocation(1000)
+	data := allocation(1000)
+	_ = data
 
 	println(&array)
+
 }
